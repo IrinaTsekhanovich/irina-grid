@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/e00ce7ad-d0f0-4b34-b555-67f372acf5ad/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/irina-grid",
+    "appService.deploySubpath": ""
+}
