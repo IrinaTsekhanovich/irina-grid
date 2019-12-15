@@ -1,20 +1,4 @@
-.text{
-    color: orange;
-}
-
 body {
     background: #466368;
-    border-radius: 6px;
-    height: 120px;
     background-image: url("back.jpg");
-  }
-
-#btn1{
-  background: #67b11c;
-  background: 50% no-repeat, linear-gradient(#72c41f, #5c9e19);
-  border: 2px solid #467813;
-  border-radius: 5px;
-  color: #fff;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  padding: 15px 20px 15px 50px;
 }
