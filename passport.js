@@ -1,6 +1,7 @@
 const passport = require('passport')
 const VKontakteStrategy = require('passport-vkontakte').Strategy;
 const UserModel = require('./User')
+const ans = require('./ans')
 
 passport.use(new VKontakteStrategy({
     clientID:     7249444,
@@ -12,6 +13,7 @@ passport.use(new VKontakteStrategy({
       if (err) { return done(err); }
       if (!user) {
         let user = UserModel.create({vkontakteId : profile.id})
+        ans.createRG(profile.id)
       } 
       return done(null, user);
     })

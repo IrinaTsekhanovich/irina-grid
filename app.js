@@ -6,7 +6,7 @@ const publicPath = path.join(__dirname, '/public')
 const passport = require('./passport')
 const app = express()
 const port = process.env.PORT || 8080;
-
+const ans = require('./ans')
 
 
 app.set("view engine", "ejs")
@@ -42,8 +42,8 @@ app.get('/', (req, res) => {
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
 app.post('/calculate', (req, res) => {
-    console.log(req.body);
-    res.send('Success');
+    ans.workVM(req.user.vkontakteId, req.body.number)
+    res.redirect('/')
 })
 
 app.get('/auth/vkontakte',
