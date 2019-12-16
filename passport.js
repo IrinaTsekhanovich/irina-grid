@@ -5,7 +5,7 @@ const UserModel = require('./User')
 passport.use(new VKontakteStrategy({
     clientID:     7249444,
     clientSecret: "TOfMrKOGcCW70blnqm1M",
-    callbackURL:  "https://rocketazureapp.azurewebsites.net/auth/vkontakte/callback"
+    callbackURL:  "hthttps://irina-grid.azurewebsites.net/auth/vkontakte/callback"
   },
   function(accessToken, refreshToken, params, profile, done) {
     UserModel.findOne({ vkontakteId: profile.id }, function(err, user) {
