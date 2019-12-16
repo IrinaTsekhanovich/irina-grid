@@ -1,18 +1,19 @@
 const express = require('express')
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
+const path = require('path')
+const publicPath = path.join(__dirname, '/public')
 const passport = require('./passport')
 const app = express()
 const port = process.env.PORT || 8080;
-const bodyParser = require('body-parser');
+
 
 
 app.set("view engine", "ejs")
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-extended: true
-}));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(publicPath))
 
 app.use(express.static('public'))
 
@@ -32,7 +33,6 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-require('dotenv').config()
 
 app.get('/', (req, res) => res.render('index'))
 
