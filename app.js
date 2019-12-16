@@ -40,14 +40,12 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
-
 app.post('/calculate', (req, res) => {
     ans.createRG()
     ans.createVM()
     ans.workVM(req.user.vkontakteId, req.body.number)
     res.redirect('/')
 })
-
 app.get('/auth/vkontakte',
   passport.authenticate('vkontakte'),
   function(req, res){
