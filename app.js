@@ -7,7 +7,7 @@ const passport = require('./passport')
 const app = express()
 const port = process.env.PORT || 8080;
 const ans = require('./ans')
-
+const User = require('./User')
 
 app.set("view engine", "ejs")
 
