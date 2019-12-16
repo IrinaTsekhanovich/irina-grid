@@ -16,8 +16,11 @@
     <div class="inner">
       <h3 class="masthead-brand">Grid&Cloud</h3>
       <nav class="nav nav-masthead justify-content-center">
+        <% if(Auth !== true){ %>
         <a class="btn btn-lg btn-secondary" id="log-in-btn" href="/auth/vkontakte">Log In</a>
-        <a hidden class="btn btn-lg btn-secondary" id="btn-logout" href="/logout">Log Out</a>
+        <% }else{ %>
+          <a class="btn btn-lg btn-secondary" id="btn-logout" href="/logout">Log Out</a>
+        <% } %>
       </nav>
     </div>
   </header>

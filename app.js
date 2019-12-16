@@ -34,7 +34,10 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/', (req, res) => res.render('index'))
+app.get('/', (req, res) => {
+  console.log(req.isAuthenticated())
+  res.render('index', {Auth : req.isAuthenticated()}) 
+})
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
