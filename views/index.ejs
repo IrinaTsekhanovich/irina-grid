@@ -34,9 +34,10 @@
     <% } %>
     <% if(Auth === true){ %>
     <p class="lead">
-      <form>
+      <form action='/calculate' method="POST">
         <input type="number" name='number'>
         <button type="submit" onclick=click() class="btn btn-lg btn-secondary">Make dreams come true</button>
+        <p class="lead" id="textresult"></p>
       </form>
     </p>
     <% } %>
@@ -48,7 +49,9 @@
     </footer>
   </div>
 <% function click(button){ %>
-<%  $.post('/calculate', {number: req.body.number}); %>
+<%  $.post('/calculate', {number: req.body.number}), function(data){
+  textresult.innerHTML=data;
+}); %>
 <% } %>
 
 </body></html>

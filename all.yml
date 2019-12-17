@@ -1,0 +1,124 @@
+DELETE VM
+- name: Remove VM
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Delete VM
+      azure_rm_virtualmachine:
+        resource_group: "myResourceGroupN - {{ userId }}"
+        name: "myVM"
+        remove_on_absent: all
+        state: absent
+
+CREATE VM
+- hosts: localhost
+  connection: local
+  tasks:
+  - name: Create virtual network
+    azure_rm_virtualnetwork:
+      resource_group: "myResourceGroupN - {{ userId }}"
+      name: myVnet
+      address_prefixes: "10.0.0.0/16"
+  - name: Add subnet
+    azure_rm_subnet:
+      resource_group: "myResourceGroupN - {{ userId }}"
+      name: mySubnet
+      address_prefix: "10.0.1.0/24"
+      virtual_network: myVnet
+  - name: Create public IP address
+    azure_rm_publicipaddress:
+      resource_group: "myResourceGroupN - {{ userId }}"
+      allocation_method: Static
+      name: myPublicIP
+    register: output_ip_address
+  - name: Dump public IP for VM which will be created
+    debug:
+      msg: "The public IP is {{ output_ip_address.state.ip_address }}."
+  - name: Create Network Security Group that allows SSH
+    azure_rm_securitygroup:
+      resource_group: "myResourceGroupN - {{ userId }}"
+      name: myNetworkSecurityGroup
+      rules:
+        - name: SSH
+          protocol: Tcp
+          destination_port_range: 22
+          access: Allow
+          priority: 1001
+          direction: Inbound
+  - name: Create virtual network interface card
+    azure_rm_networkinterface:
+      resource_group: "myResourceGroupN - {{ userId }}"
+      name: myNIC
+      virtual_network: myVnet
+      subnet: mySubnet
+      public_ip_name: myPublicIP
+      security_group: myNetworkSecurityGroup
+  - name: Create VM
+    azure_rm_virtualmachine:
+      resource_group: "myResourceGroupN - {{ userId }}"
+      name: myVM
+      vm_size: Standard_DS1_v2
+      admin_username: azureuser
+      ssh_password_enabled: false
+      ssh_public_keys:
+        - path:  "/home/azureuser/.ssh/authorized_keys"
+          key_data: "{{ lookup('file', '/home/site/repository/.ssh/id_rsa.pub') }}"
+          
+      network_interfaces: myNIC
+      image:
+        offer: UbuntuServer
+        publisher: Canonical
+        sku: '16.04-LTS'
+        version: latest
+
+CREATE RG
+- hosts: localhost
+  connection: local
+  tasks:
+  - name: Create resource group
+    azure_rm_resourcegroup:
+      name: "myResourceGroupN - {{ userId }}"
+      location: westeurope
+
+WORK VM
+- name: VM start
+  hosts: dev
+  gather_facts: yes
+  become: yes
+  vars:
+    NODEJS_VERSION: "8"
+    ansible_distribution_release: "xenial" #trusty
+  tasks:
+    - name: Install the gpg key for nodejs LTS
+      apt_key:
+        url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+        state: present
+  
+    - name: Install the nodejs LTS repos
+      apt_repository:
+        repo: "deb https://deb.nodesource.com/node_{{ NODEJS_VERSION }}.x {{ ansible_distribution_release }} main"
+        state: present
+        update_cache: yes
+  
+    - name: Install the nodejs
+      apt:
+        name: nodejs
+        state: present
+
+    - name: Clone the repository
+      git:
+        repo: https://github.com/IrinaTsekhanovich/irina-grid-VMwork.git
+        dest: /home/azureuser/worker
+
+    - name: Update npm
+      npm:
+        path=/home/azureuser/worker
+    
+    - name: npm install
+      shell: npm install /home/azureuser/worker
+
+    - name: start app
+      shell: node /home/azureuser/worker/app.js
+      environment:
+        ID: "{{ userId }}"
+        NUM: "{{ number }}"

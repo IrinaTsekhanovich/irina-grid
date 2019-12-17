@@ -4,7 +4,7 @@
   tasks:
     - name: Delete VM
       azure_rm_virtualmachine:
-        resource_group: "myResourceGroupN - {{ userId }}"
+        resource_group: "myResourceGroupNew"
         name: "myVM"
         remove_on_absent: all
         state: absent

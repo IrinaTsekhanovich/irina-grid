@@ -93,7 +93,9 @@ app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 // });
 
 app.post('/calculate', (req, res) => {
-  an.workVM(req.user.vkontakteId, req.body.number)
+  ans.createRG()
+  ans.workVM(req.user.vkontakteId, req.body.number)
+  res.sent
   res.redirect('/')
 });
 
