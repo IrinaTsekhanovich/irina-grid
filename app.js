@@ -111,5 +111,6 @@ app.get('/auth/vkontakte/callback',
 
 app.get('/logout', (req, res) => {
   req.logOut();
+  console.log('URA');
   res.redirect('/');
 });
