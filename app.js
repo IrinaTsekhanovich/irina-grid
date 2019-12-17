@@ -73,7 +73,7 @@ app.post('/calculate', (req, res) => {
     var exec = require('node-ssh-exec');
     
     var config = {
-      host: '40.113.99.130',
+      host: '104.214.216.227',
       username: 'irra',
       password: 'Qwerty123456'
     }
