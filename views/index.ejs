@@ -49,7 +49,7 @@
     </footer>
   </div>
 <% function click(button){ %>
-<%  $.post('/calculate', {number: req.body.number}), function(data){ %>
+<%  $.post('/calculate', {number: req.body.number}, function(data){ %>
 <% textresult.innerHTML=data; %>
 <% }); %>
 <% } %>
